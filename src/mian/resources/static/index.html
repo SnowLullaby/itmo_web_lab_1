@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Web lab 1</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: url('images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            font-family: fantasy;
+            font-size: 24px;
+            color: #2d4057;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-cell {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .graph-cell {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.75);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .graph-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .results-container {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.75);
+        }
+
+        form > label {
+            display: block;
+            margin: 10px 5%;
+            font-weight: bold;
+        }
+
+        form > input[type="text"] {
+            margin: 10px 5%;
+            padding: 8px;
+            width: 90%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        form > input[type="text"]:focus {
+            border-color: #5332a5;
+            outline: none;
+            box-shadow: 0 0 5px rgba(83, 50, 165, 0.5);
+        }
+
+        form > input[type="submit"] {
+            margin: 10px 5%;
+            padding: 10px;
+            width: 90%;
+            background-color: #5332a5;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        form > input[type="submit"]:hover {
+            background-color: #3f267c;
+        }
+
+        .radio-group, .checkbox-group {
+            margin: 10px 5%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .radio-group input[type="radio"],
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .radio-group label,
+        .checkbox-group label {
+            margin-right: 15px;
+            font-weight: normal;
+        }
+
+        table#resultsTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #5332a5;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        td[data-result="true"] {
+            color: green;
+            font-weight: bold;
+        }
+
+        td[data-result="false"] {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <div class="header">
+        Вавилина Екатерина Андреевна<br>
+        Группа P3230, Вариант 336423
+    </div>
+    <div class="form-graph-container">
+        <div class="form-cell">
+            <form id="pointForm" onsubmit="submitForm(event)">
+                <label>X:</label><br>
+                <div class="radio-group">
+                    <input type="radio" id="x_-2" name="x" value="-2"><label for="x_-2">-2</label>
+                    <input type="radio" id="x_-1.5" name="x" value="-1.5"><label for="x_-1.5">-1.5</label>
+                    <input type="radio" id="x_-1" name="x" value="-1"><label for="x_-1">-1</label>
+                    <input type="radio" id="x_-0.5" name="x" value="-0.5"><label for="x_-0.5">-0.5</label>
+                    <input type="radio" id="x_0" name="x" value="0"><label for="x_0">0</label>
+                    <input type="radio" id="x_0.5" name="x" value="0.5"><label for="x_0.5">0.5</label>
+                    <input type="radio" id="x_1" name="x" value="1"><label for="x_1">1</label>
+                    <input type="radio" id="x_1.5" name="x" value="1.5"><label for="x_1.5">1.5</label>
+                    <input type="radio" id="x_2" name="x" value="2"><label for="x_2">2</label>
+                </div><br>
+                <label for="y">Y:</label><br>
+                <input type="text" id="y" name="y" placeholder="Введите Y (-5...5)"><br>
+                <label>R:</label><br>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="r_1" name="r" value="1"><label for="r_1">1</label>
+                    <input type="checkbox" id="r_1.5" name="r" value="1.5"><label for="r_1.5">1.5</label>
+                    <input type="checkbox" id="r_2" name="r" value="2"><label for="r_2">2</label>
+                    <input type="checkbox" id="r_2.5" name="r" value="2.5"><label for="r_2.5">2.5</label>
+                    <input type="checkbox" id="r_3" name="r" value="3"><label for="r_3">3</label>
+                </div><br>
+                <input type="submit" value="Отправить">
+            </form>
+        </div>
+        <div class="graph-cell">
+            <img src="images/graph.jpg" alt="График области" class="graph-image">
+        </div>
+    </div>
+    <div class="results-container">
+        <table id="resultsTable">
+            <thead>
+            <tr>
+                <th>X</th>
+                <th>Y</th>
+                <th>R</th>
+                <th>Попадание</th>
+                <th>Время запроса</th>
+                <th>Время выполнения</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
