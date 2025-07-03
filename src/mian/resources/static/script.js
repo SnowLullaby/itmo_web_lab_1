@@ -11,17 +11,17 @@ function validateInput(x, y, r) {
     }
 
     if (isNaN(xVal) || xVal < -2 || xVal > 2) {
-        errorMessage.textContent = "Недопустимые данные для ввода: X должен быть числом от -2 до 2";
+        errorMessage.textContent = "X должен быть числом от -2 до 2";
         errorMessage.classList.add('show');
         return false;
     }
     if (isNaN(yVal) || yVal < -5 || yVal > 5) {
-        errorMessage.textContent = "Недопустимые данные для ввода: Y должен быть числом от -5 до 5";
+        errorMessage.textContent = "Y должен быть числом от -5 до 5";
         errorMessage.classList.add('show');
         return false;
     }
     if (isNaN(rVal) || rVal < 1 || rVal > 3) {
-        errorMessage.textContent = "Недопустимые данные для ввода: R должен быть числом от 1 до 3";
+        errorMessage.textContent = "R должен быть числом от 1 до 3";
         errorMessage.classList.add('show');
         return false;
     }
@@ -39,7 +39,7 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
 
     if (!x || !y || !r) {
         const errorMessage = document.querySelector('.error-message');
-        errorMessage.textContent = "Недопустимые данные для ввода: выберите все значения";
+        errorMessage.textContent = "Выберите все значения";
         errorMessage.classList.add('show');
         return;
     }
