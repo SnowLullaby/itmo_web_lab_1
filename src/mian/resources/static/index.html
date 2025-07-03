@@ -38,49 +38,41 @@
             margin-bottom: 20px;
         }
 
-        .form-cell {
-            flex: 1;
-            min-width: 100px;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.75);
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(83, 50, 165, 0.5);
-        }
-
         .graph-cell {
             flex: 1;
-            min-width: 100px;
+            min-width: 200px;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.75);
             border-radius: 8px;
             box-shadow: 0 0 5px rgba(83, 50, 165, 0.5);
-            position: relative;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #graphCanvas {
             max-width: 100%;
             max-height: 100%;
-            border: 1px solid #ddd;
             border-radius: 4px;
-            background-color: rgba(255, 255, 255, 1);
             box-sizing: border-box;
         }
 
-        .results-container {
-            padding: 20px;
+        .form-cell {
+            flex: 1;
+            min-width: 200px;
+            background-color: rgba(255, 255, 255, 0.75);
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(83, 50, 165, 0.5);
-            background-color: rgba(255, 255, 255, 0.75);
         }
 
         form {
             display: flex;
             flex-direction: column;
+            gap: 5%;
         }
 
         .form-block {
-            margin: 3%;
+            margin: 5.4%;
         }
 
         form > .form-block > label {
@@ -152,6 +144,13 @@
 
         .error-message.show {
             display: block;
+        }
+
+        .results-container {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(83, 50, 165, 0.5);
+            background-color: rgba(255, 255, 255, 0.75);
         }
 
         table#resultsTable {
@@ -228,7 +227,7 @@
             </form>
         </div>
         <div class="graph-cell">
-            <canvas id="graphCanvas"></canvas>
+            <canvas id="graphCanvas" width="500" height="500"></canvas>
         </div>
     </div>
     <div class="results-container">
