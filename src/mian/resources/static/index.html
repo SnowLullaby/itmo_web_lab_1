@@ -10,6 +10,7 @@
             background: url('images/background.jpg') no-repeat center center fixed;
             background-size: cover;
             font-family: Arial, sans-serif;
+            color: #2d4057;
         }
 
         .main-container {
@@ -23,7 +24,6 @@
         .header {
             font-family: fantasy;
             font-size: 24px;
-            color: #2d4057;
             text-align: center;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.75);
@@ -44,7 +44,7 @@
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.75);
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(83, 50, 165, 0.5);
         }
 
         .graph-cell {
@@ -53,7 +53,7 @@
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.75);
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 5px rgba(83, 50, 165, 0.5);
         }
 
         .graph-image {
@@ -68,68 +68,82 @@
         .results-container {
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(83, 50, 165, 0.5);
             background-color: rgba(255, 255, 255, 0.75);
         }
 
-        form > label {
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-block {
+            margin: 3%;
+        }
+
+        form > .form-block > label {
             display: block;
-            margin: 10px 5%;
             font-weight: bold;
         }
 
-        form > input[type="text"] {
-            margin: 10px 5%;
+        form > .form-block > input[type="text"] {
             padding: 8px;
-            width: 90%;
+            width: 100%;
             box-sizing: border-box;
             border: 1px solid #ccc;
             border-radius: 4px;
+            color: #2d4057;
         }
 
-        form > input[type="text"]:focus {
-            border-color: #5332a5;
+        form > .form-block > input[type="text"]:focus {
+            border-color: #a341a1;
             outline: none;
             box-shadow: 0 0 5px rgba(83, 50, 165, 0.5);
+            color: #2d4057;
         }
 
-        form > input[type="submit"] {
-            margin: 10px 5%;
+        form > .form-block > input[type="submit"] {
             padding: 10px;
-            width: 90%;
-            background-color: #5332a5;
+            width: 100%;
+            background-color: #a341a1;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
         }
 
-        form > input[type="submit"]:hover {
-            background-color: #3f267c;
+        form > .form-block > input[type="submit"]:hover {
+            background-color: #6841a3;
         }
 
         .radio-group, .checkbox-group {
-            margin: 10px 5%;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
 
+        .radio-item, .checkbox-item {
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 10px;
+        }
+
         .radio-group input[type="radio"],
         .checkbox-group input[type="checkbox"] {
-            margin-right: 5px;
+            margin-right: 1pt;
+            accent-color: #a341a1;
         }
 
         .radio-group label,
         .checkbox-group label {
-            margin-right: 15px;
+            margin-right: 5px;
             font-weight: normal;
         }
 
         table#resultsTable {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         th, td {
@@ -139,23 +153,21 @@
         }
 
         th {
-            background-color: #5332a5;
+            background-color: #a341a1;
             color: white;
-            font-family: Arial, sans-serif;
         }
 
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #9696bf;
         }
 
         td[data-result="true"] {
-            color: green;
-            font-weight: bold;
+            color: #00805a;
         }
 
         td[data-result="false"] {
-            color: red;
-            font-weight: bold;
+            color: #ff0059;
+
         }
     </style>
 </head>
@@ -168,29 +180,37 @@
     <div class="form-graph-container">
         <div class="form-cell">
             <form id="pointForm" onsubmit="submitForm(event)">
-                <label>X:</label><br>
-                <div class="radio-group">
-                    <input type="radio" id="x_-2" name="x" value="-2"><label for="x_-2">-2</label>
-                    <input type="radio" id="x_-1.5" name="x" value="-1.5"><label for="x_-1.5">-1.5</label>
-                    <input type="radio" id="x_-1" name="x" value="-1"><label for="x_-1">-1</label>
-                    <input type="radio" id="x_-0.5" name="x" value="-0.5"><label for="x_-0.5">-0.5</label>
-                    <input type="radio" id="x_0" name="x" value="0"><label for="x_0">0</label>
-                    <input type="radio" id="x_0.5" name="x" value="0.5"><label for="x_0.5">0.5</label>
-                    <input type="radio" id="x_1" name="x" value="1"><label for="x_1">1</label>
-                    <input type="radio" id="x_1.5" name="x" value="1.5"><label for="x_1.5">1.5</label>
-                    <input type="radio" id="x_2" name="x" value="2"><label for="x_2">2</label>
-                </div><br>
-                <label for="y">Y:</label><br>
-                <input type="text" id="y" name="y" placeholder="Введите Y (-5...5)"><br>
-                <label>R:</label><br>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="r_1" name="r" value="1"><label for="r_1">1</label>
-                    <input type="checkbox" id="r_1.5" name="r" value="1.5"><label for="r_1.5">1.5</label>
-                    <input type="checkbox" id="r_2" name="r" value="2"><label for="r_2">2</label>
-                    <input type="checkbox" id="r_2.5" name="r" value="2.5"><label for="r_2.5">2.5</label>
-                    <input type="checkbox" id="r_3" name="r" value="3"><label for="r_3">3</label>
-                </div><br>
-                <input type="submit" value="Отправить">
+                <div class="form-block">
+                    <label>X:</label><br>
+                    <div class="radio-group">
+                        <div class="radio-item"><input type="radio" id="x_-2" name="x" value="-2"><label for="x_-2">-2</label></div>
+                        <div class="radio-item"><input type="radio" id="x_-1.5" name="x" value="-1.5"><label for="x_-1.5">-1.5</label></div>
+                        <div class="radio-item"><input type="radio" id="x_-1" name="x" value="-1"><label for="x_-1">-1</label></div>
+                        <div class="radio-item"><input type="radio" id="x_-0.5" name="x" value="-0.5"><label for="x_-0.5">-0.5</label></div>
+                        <div class="radio-item"><input type="radio" id="x_0" name="x" value="0"><label for="x_0">0</label></div>
+                        <div class="radio-item"><input type="radio" id="x_0.5" name="x" value="0.5"><label for="x_0.5">0.5</label></div>
+                        <div class="radio-item"><input type="radio" id="x_1" name="x" value="1"><label for="x_1">1</label></div>
+                        <div class="radio-item"><input type="radio" id="x_1.5" name="x" value="1.5"><label for="x_1.5">1.5</label></div>
+                        <div class="radio-item"><input type="radio" id="x_2" name="x" value="2"><label for="x_2">2</label></div>
+                    </div>
+                </div>
+                <div class="form-block">
+                    <label for="y">Y:</label><br>
+                    <input type="text" id="y" name="y" placeholder="Введите Y (-5...5)"><br>
+                </div>
+                <div class="form-block">
+                    <label>R:</label><br>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item"><input type="checkbox" id="r_1" name="r" value="1"><label for="r_1">1</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="r_1.5" name="r" value="1.5"><label for="r_1.5">1.5</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="r_2" name="r" value="2"><label for="r_2">2</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="r_2.5" name="r" value="2.5"><label for="r_2.5">2.5</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="r_3" name="r" value="3"><label for="r_3">3</label></div>
+                    </div>
+                </div>
+                <div class="form-block">
+                    <input type="submit" value="Отправить">
+                </div>
             </form>
         </div>
         <div class="graph-cell">
