@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 5, 0, Math.PI * 2);
+        ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.moveTo(centerX, centerY);
         ctx.stroke();
