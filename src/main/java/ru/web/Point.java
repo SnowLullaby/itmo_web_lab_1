@@ -1,10 +1,10 @@
 package ru.web;
 
 public class Point {
-    private double x;
-    private double y;
-    private double r;
-    private boolean hit;
+    private final double x;
+    private final double y;
+    private final double r;
+    private final boolean hit;
 
     public Point(double x, double y, double r, boolean hit) {
         this.x = x;
