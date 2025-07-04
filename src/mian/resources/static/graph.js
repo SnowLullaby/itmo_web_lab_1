@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText(label, centerX + 10, yPos + 5);
         });
 
+        // 0
         ctx.beginPath();
         ctx.arc(centerX, centerY, 4, 0, Math.PI * 2);
         ctx.fill();

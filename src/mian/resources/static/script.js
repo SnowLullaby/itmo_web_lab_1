@@ -1,12 +1,11 @@
-function validateInput(x, y, r) {
-
+function validateInput(x, y, rValues) {
     const xVal = parseFloat(x);
     const yVal = parseFloat(y);
-    const rVal = parseFloat(r);
-
     const errorMessage = document.querySelector('.error-message');
-    if (!errorMessage) {
-        console.error('Error: .error-message element not found');
+
+    if (!x || !y || !rValues || rValues.length === 0) {
+        errorMessage.textContent = "Не задано значение X, Y или R";
+        errorMessage.classList.add('show');
         return false;
     }
 
@@ -15,16 +14,21 @@ function validateInput(x, y, r) {
         errorMessage.classList.add('show');
         return false;
     }
+
     if (isNaN(yVal) || yVal < -5 || yVal > 5) {
         errorMessage.textContent = "Y должен быть числом от -5 до 5";
         errorMessage.classList.add('show');
         return false;
     }
-    if (isNaN(rVal) || rVal < 1 || rVal > 3) {
-        errorMessage.textContent = "R должен быть числом от 1 до 3";
-        errorMessage.classList.add('show');
-        return false;
-    }
+
+    rValues.forEach(rVal => {
+        const rValParsed = parseFloat(rVal);
+        if (isNaN(rValParsed) || rValParsed < 1 || rValParsed > 3) {
+            errorMessage.textContent = "R должен быть числом от 1 до 3";
+            errorMessage.classList.add('show');
+            return false;
+        }
+    });
 
     errorMessage.classList.remove('show');
     return true;
@@ -35,29 +39,35 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
 
     const x = document.querySelector('input[name="x"]:checked')?.value;
     const y = document.querySelector('input[name="y"]').value;
-    const r = document.querySelector('input[name="r"]:checked')?.value;
 
-    if (!x || !y || !r) {
-        const errorMessage = document.querySelector('.error-message');
-        errorMessage.textContent = "Выберите все значения";
-        errorMessage.classList.add('show');
-        return;
-    }
+    const rCheckboxes = document.querySelectorAll('input[name="r"]:checked');
+    const rValues = Array.from(rCheckboxes).map(cb => cb.value);
 
-    if (validateInput(x, y, r)) {
-        console.log('Data valid, proceeding...');
-        const data = { x: parseFloat(x), y: parseFloat(y), r: parseFloat(r) };
-        fetch('/cgi-bin/fastcgi-server', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+    if (!validateInput(x, y, rValues)) return;
+
+    const data = { x: parseFloat(x), y: parseFloat(y), r: rValues.map(r => parseFloat(r)) };
+
+    fetch('/fcgi-bin/fcgi-server.jar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (!response.ok) {
+                const errorMsg = `${response.status} - ${response.statusText}`;
+                if (response.status >= 400 && response.status < 500) {
+                    throw new Error(`клиентская ошибка ${errorMsg}`);
+                } else if (response.status >= 500 && response.status < 600) {
+                    throw new Error(`серверная ошибка ${errorMsg}`);
+                } else {
+                    throw new Error(errorMsg);
+                }
+            }
+            return response.json();
         })
-            .then(response => {
-                if (!response.ok) throw new Error('Ошибка сервера');
-                return response.json();
-            })
-            .then(result => {
-                const tbody = document.querySelector("#resultsTable tbody");
+        .then(results => {
+            const tbody = document.querySelector("#resultsTable tbody");
+            results.forEach(result => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${result.x}</td>
@@ -66,9 +76,9 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
                     <td data-result="${result.hit}">${result.hit ? "Попадание" : "Промах"}</td>
                     <td>${result.currentTime}</td>
                     <td>${result.executionTime} ms</td>
-                `;
+                    `;
                 tbody.insertBefore(row, tbody.firstChild);
-            })
-            .catch(error => alert("Ошибка: " + error.message));
-    }
+            });
+        })
+        .catch(error => alert("Ошибка: " + error.message));
 });
