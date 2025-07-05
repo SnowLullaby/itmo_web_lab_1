@@ -26,7 +26,27 @@
 - ✅ Страница должна содержать сценарий на языке JavaScript, осуществляющий валидацию значений, вводимых пользователем в поля формы. Любые некорректные значения (например, буквы в координатах точки или отрицательный радиус) должны блокироваться.
 
 ## График
-![img.png](img.png)
+![img.png](assets/img.png)
+
+## Сборка
+**Локально**: docker-compose.yaml
+
+**Гелиос**:
+```bash
+ssh -L 28002:localhost:28002 s336423@helios.cs.ifmo.ru -p 2222
+
+httpd -f ~/web/httpd.conf -k start 
+
+java -jar -DFCGI_PORT=28003 ~/web/httpd-root/fcgi-bin/fcgi-server.jar
+
+curl -X POST -H "Content-Type: application/json" -d '{"x": 1, "y": 2, "r": [1.5]}' http://localhost:28002/fcgi-bin/fcgi-server.jar
+
+ps aux + kill
+```
+
+Структура проекта:
+
+![img_1.png](assets/img_1.png)
 
 ## Вопросы
 - Протокол HTTP. Структура запросов и ответов, методы запросов, коды ответов сервера, заголовки запросов и ответов.
