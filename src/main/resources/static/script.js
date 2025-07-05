@@ -55,20 +55,20 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
         .then(response => {
             if (!response.ok) {
                 return response.json()
-                    .then(errorData => {
-                        const errorDetail = errorData && errorData.error ? `: ${errorData.error}` : '';
-                        const errorMsg = `${response.status} - ${response.statusText}${errorDetail}`;
-                        if (response.status >= 400 && response.status < 500) {
-                            throw new Error(`клиентской части: ${errorMsg}`);
-                        } else if (response.status >= 500 && response.status < 600) {
-                            throw new Error(`серверной части: ${errorMsg}`);
-                        } else {
-                            throw new Error(errorMsg);
-                        }
-                    })
                     .catch(() => {
                         const errorMsg = `${response.status} - ${response.statusText || 'Unknown Error'}`;
                         throw new Error(`${errorMsg}`);
+                    })
+                    .then(results => {
+                        const errorDetail = results && results.error ? `: ${results.error}` : '';
+                        const errorMsg = `${response.status} - ${response.statusText}${errorDetail}`;
+                        if (response.status >= 400 && response.status < 500) {
+                            throw new Error(`клиента: ${errorMsg}`);
+                        } else if (response.status >= 500 && response.status < 600) {
+                            throw new Error(`сервера: ${errorMsg}`);
+                        } else {
+                            throw new Error(errorMsg);
+                        }
                     });
             }
             return response.json();

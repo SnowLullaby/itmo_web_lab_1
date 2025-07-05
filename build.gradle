@@ -9,12 +9,11 @@ version = '1.0'
 repositories {
     mavenCentral()
     flatDir {
-        dirs 'lib'
+        dirs 'libs'
     }
 }
-
 dependencies {
-    implementation name: 'fastcgi-lib'
+    implementation files('./libs/fastcgi-lib.jar')
     implementation 'com.google.code.gson:gson:2.11.0'
 }
 
@@ -23,11 +22,13 @@ test {
 }
 
 jar {
-    manifest {
-        attributes 'Main-Class': 'ru.web.Main'
-    }
+    enabled = false
 }
 
 shadowJar{
-    version = '1.0'
+    manifest {
+        attributes 'Main-Class': 'ru.web.Main'
+    }
+
+    archiveFileName = 'fcgi-server.jar'
 }

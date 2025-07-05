@@ -3,11 +3,8 @@ package ru.web;
 import com.google.gson.JsonObject;
 import com.fastcgi.FCGIInterface;
 import ru.web.dto.ResponseDTO;
-import ru.web.parser.ParseResult;
-import ru.web.parser.Parser;
-import ru.web.validators.HitValidator;
-import ru.web.validators.JsonValidator;
-import ru.web.validators.ValidationResult;
+import ru.web.parser.*;
+import ru.web.validators.*;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -22,20 +19,22 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private static final com.google.gson.Gson GSON = new com.google.gson.Gson();
     private static final String RESPONSE_TEMPLATE = """
-            Status: %d %s
+            HTTP/1.1 %d %s
             Content-Type: application/json
             Content-Length: %d
-            
+            \s
             %s
             """;
 
     public static void main(String[] args) {
+        LOGGER.info("Start");
         FCGIInterface fcgiInt = new FCGIInterface();
         while (fcgiInt.FCGIaccept() >= 0) {
             long startTime = System.nanoTime();
+            LOGGER.info("Получен запрос");
             try {
                 String jsonString = readRequestBody();
-                LOGGER.info("Получен запрос: " + jsonString);
+                LOGGER.info("Распаршен запрос: " + jsonString);
 
                 handleRequest(jsonString, startTime);
             } catch (Exception e) {
@@ -83,7 +82,7 @@ public class Main {
         String jsonResponse = GSON.toJson(responses);
         String response = String.format(RESPONSE_TEMPLATE, 200, "OK", jsonResponse.getBytes(StandardCharsets.UTF_8).length, jsonResponse);
         LOGGER.info("Отправлен ответ: " + response);
-        System.out.println(response);
+        System.out.print(response);
     }
 
     private static void sendErrorResponse(int status, String statusText, String errorMessage) {
