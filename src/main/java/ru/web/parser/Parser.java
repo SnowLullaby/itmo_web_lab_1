@@ -11,11 +11,11 @@ public class Parser {
         try {
             RequestDTO dto = GSON.fromJson(jsonString, RequestDTO.class);
             if (dto == null) {
-                throw new IllegalArgumentException("Ошибка парсинга: пустой JSON");
+                throw new IllegalArgumentException("Пустой JSON");
             }
             return new ParseResult(dto);
         } catch (JsonSyntaxException e) {
-            throw new IllegalArgumentException("Ошибка парсинга JSON: некорректный формат значений", e);
+            throw new IllegalArgumentException("Некорректный формат значений", e);
         }
     }
 }
