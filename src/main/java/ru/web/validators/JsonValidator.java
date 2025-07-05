@@ -3,10 +3,6 @@ package ru.web.validators;
 import ru.web.parser.ParseResult;
 
 public class JsonValidator {
-    public record ValidationResult(boolean isValid, String errorMessage) {
-
-    }
-
     public static ValidationResult validate(ParseResult parsed) {
         if (parsed.getX() < -2 || parsed.getX() > 2) {
             return new ValidationResult(false, "X должен быть числом от -2 до 2");

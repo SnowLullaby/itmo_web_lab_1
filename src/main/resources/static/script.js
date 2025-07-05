@@ -54,14 +54,22 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
     })
         .then(response => {
             if (!response.ok) {
-                const errorMsg = `${response.status} - ${response.statusText}`;
-                if (response.status >= 400 && response.status < 500) {
-                    throw new Error(`клиентская ошибка ${errorMsg}`);
-                } else if (response.status >= 500 && response.status < 600) {
-                    throw new Error(`серверная ошибка ${errorMsg}`);
-                } else {
-                    throw new Error(errorMsg);
-                }
+                return response.json()
+                    .then(errorData => {
+                        const errorDetail = errorData && errorData.error ? `: ${errorData.error}` : '';
+                        const errorMsg = `${response.status} - ${response.statusText}${errorDetail}`;
+                        if (response.status >= 400 && response.status < 500) {
+                            throw new Error(`клиентской части: ${errorMsg}`);
+                        } else if (response.status >= 500 && response.status < 600) {
+                            throw new Error(`серверной части: ${errorMsg}`);
+                        } else {
+                            throw new Error(errorMsg);
+                        }
+                    })
+                    .catch(() => {
+                        const errorMsg = `${response.status} - ${response.statusText || 'Unknown Error'}`;
+                        throw new Error(`${errorMsg}`);
+                    });
             }
             return response.json();
         })
@@ -80,5 +88,5 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
                 tbody.insertBefore(row, tbody.firstChild);
             });
         })
-        .catch(error => alert("Ошибка: " + error.message));
+        .catch(error => alert("Ошибка " + error.message));
 });
