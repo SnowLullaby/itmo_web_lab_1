@@ -15,7 +15,7 @@ public class Parser {
             }
             return new ParseResult(dto);
         } catch (JsonSyntaxException e) {
-            throw new IllegalArgumentException("Некорректный формат значений", e);
+            throw new IllegalArgumentException("Некорректный формат запроса", e);
         }
     }
 }
