@@ -15,6 +15,12 @@ function validateInput(x, y, rValues) {
         return false;
     }
 
+    if (y.includes(',')) {
+        errorMessage.textContent = "Используйте точку как разделитель";
+        errorMessage.classList.add('show');
+        return false;
+    }
+
     if (isNaN(yVal) || yVal < -5 || yVal > 5) {
         errorMessage.textContent = "Y должен быть числом от -5 до 5";
         errorMessage.classList.add('show');
@@ -76,14 +82,25 @@ document.getElementById('pointForm').addEventListener('submit', function (event)
         .then(results => {
             const tbody = document.querySelector("#resultsTable tbody");
             results.forEach(result => {
+                const date = new Date(result.currentTime);
+                const formattedTime = date.toLocaleString('ru-RU', {
+                    year: '2-digit',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                }).replace(/,/, ' ');
+
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${result.x}</td>
                     <td>${result.y}</td>
                     <td>${result.r}</td>
                     <td data-result="${result.hit}">${result.hit ? "Попадание" : "Промах"}</td>
-                    <td>${result.currentTime}</td>
-                    <td>${result.executionTime} ms</td>
+                    <td>${formattedTime}</td>
+                    <td>${result.executionTime} ns</td>
                     `;
                 tbody.insertBefore(row, tbody.firstChild);
             });

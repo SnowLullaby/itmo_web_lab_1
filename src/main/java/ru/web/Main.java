@@ -13,29 +13,23 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Main {
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     private static final com.google.gson.Gson GSON = new com.google.gson.Gson();
     private static final String RESPONSE_TEMPLATE = """
-            HTTP/1.1 %d %s
+            Status: %d %s
             Content-Type: application/json
             Content-Length: %d
-            \s
+            
             %s
             """;
 
     public static void main(String[] args) {
-        LOGGER.info("Start");
         FCGIInterface fcgiInt = new FCGIInterface();
         while (fcgiInt.FCGIaccept() >= 0) {
             long startTime = System.nanoTime();
-            LOGGER.info("Получен запрос");
             try {
                 String jsonString = readRequestBody();
-                LOGGER.info("Распаршен запрос: " + jsonString);
-
                 handleRequest(jsonString, startTime);
             } catch (Exception e) {
                 handleException(e);
@@ -49,6 +43,8 @@ public class Main {
         ByteBuffer buffer = ByteBuffer.allocate(contentLength);
         var readBytes = FCGIInterface.request.inStream.read(buffer.array(), 0, contentLength);
         var requestBodyRaw = new byte[readBytes];
+        buffer.get(requestBodyRaw);
+        buffer.clear();
         return new String(requestBodyRaw, StandardCharsets.UTF_8);
     }
 
@@ -70,7 +66,7 @@ public class Main {
         double[] rValues = parsed.getR();
 
         for (double r : rValues) {
-            long executionTime = (System.nanoTime() - startTime) / 1_000_000;
+            long executionTime = (System.nanoTime() - startTime);
             String currentTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             boolean hit = HitValidator.validateHit(parsed.getX(), parsed.getY(), r);
             responses.add(new ResponseDTO(parsed.getX(), parsed.getY(), r, hit, currentTime, executionTime));
@@ -81,8 +77,7 @@ public class Main {
     private static void sendSuccessResponse(List<ResponseDTO> responses) {
         String jsonResponse = GSON.toJson(responses);
         String response = String.format(RESPONSE_TEMPLATE, 200, "OK", jsonResponse.getBytes(StandardCharsets.UTF_8).length, jsonResponse);
-        LOGGER.info("Отправлен ответ: " + response);
-        System.out.print(response);
+        System.out.println(response);
     }
 
     private static void sendErrorResponse(int status, String statusText, String errorMessage) {
@@ -90,7 +85,6 @@ public class Main {
         errorResponse.addProperty("error", errorMessage);
         String jsonError = GSON.toJson(errorResponse);
         String response = String.format(RESPONSE_TEMPLATE, status, statusText, jsonError.getBytes(StandardCharsets.UTF_8).length, jsonError);
-        LOGGER.info("Ошибка: " + response);
         System.out.println(response);
     }
 
@@ -100,6 +94,5 @@ public class Main {
         } else {
             sendErrorResponse(500, "Internal Server Error", "Внутренняя ошибка сервера: " + e.getMessage());
         }
-        LOGGER.severe("Ошибка обработки: " + e.getMessage());
     }
 }
