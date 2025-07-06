@@ -2,7 +2,7 @@ package ru.web;
 
 import com.google.gson.JsonObject;
 import com.fastcgi.FCGIInterface;
-import ru.web.dto.ResponseDTO;
+import ru.web.dto.*;
 import ru.web.parser.*;
 import ru.web.validators.*;
 
@@ -49,7 +49,7 @@ public class Main {
     }
 
     private static void handleRequest(String jsonString, long startTime) {
-        ParseResult parsed = Parser.parse(jsonString);
+        RequestDTO parsed = Parser.parse(jsonString);
         ValidationResult validation = JsonValidator.validate(parsed);
 
         if (!validation.isValid()) {
@@ -61,15 +61,15 @@ public class Main {
         sendSuccessResponse(responses);
     }
 
-    private static List<ResponseDTO> processLogic(ParseResult parsed, long startTime) {
+    private static List<ResponseDTO> processLogic(RequestDTO parsed, long startTime) {
         List<ResponseDTO> responses = new ArrayList<>();
-        double[] rValues = parsed.getR();
+        double[] rValues = parsed.r();
 
         for (double r : rValues) {
             long executionTime = (System.nanoTime() - startTime);
             String currentTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-            boolean hit = HitValidator.validateHit(parsed.getX(), parsed.getY(), r);
-            responses.add(new ResponseDTO(parsed.getX(), parsed.getY(), r, hit, currentTime, executionTime));
+            boolean hit = HitValidator.validateHit(parsed.x(), parsed.y(), r);
+            responses.add(new ResponseDTO(parsed.x(), parsed.y(), r, hit, currentTime, executionTime));
         }
         return responses;
     }
