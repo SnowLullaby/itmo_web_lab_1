@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import ru.web.dto.RequestDTO;
 
-public class Parser {
+public class JsonParser {
     private static final Gson GSON = new Gson();
 
     public static RequestDTO parse(String jsonString) throws IllegalArgumentException {
