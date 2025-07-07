@@ -5,7 +5,7 @@ import com.fastcgi.FCGIInterface;
 import ru.web.dto.*;
 import ru.web.io.IOHandler;
 import ru.web.parser.JsonParser;
-import ru.web.validators.*;
+import ru.web.validator.*;
 import java.util.List;
 import java.util.Properties;
 

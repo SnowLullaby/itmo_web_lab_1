@@ -2,7 +2,7 @@ package ru.web.handler;
 
 import ru.web.dto.RequestDTO;
 import ru.web.dto.ResponseDTO;
-import ru.web.validators.HitValidator;
+import ru.web.validator.HitValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

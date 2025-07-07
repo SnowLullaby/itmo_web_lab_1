@@ -1,4 +1,4 @@
-package ru.web.validators;
+package ru.web.validator;
 
 import ru.web.dto.RequestDTO;
 
