@@ -142,7 +142,7 @@ form > .form-block > input[type="text"]:focus {
     color: #2d4057;
 }
 
-form > .form-block > input[type="submit"] {
+form > .form-block > button[type="button"] {
     padding: 3%;
     width: 100%;
     background-color: #a341a1;
@@ -152,7 +152,7 @@ form > .form-block > input[type="submit"] {
     cursor: pointer;
 }
 
-form > .form-block > input[type="submit"]:hover {
+form > .form-block > button[type="button"]:hover {
     background-color: #6841a3;
 }
 
