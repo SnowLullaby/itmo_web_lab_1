@@ -15,46 +15,63 @@ function getFormData() {
     const y = document.querySelector('input[name="y"]').value;
     const rCheckboxes = document.querySelectorAll('input[name="r"]:checked');
     const rValues = Array.from(rCheckboxes).map(cb => cb.value);
-    return { x, y, rValues };
+    const method = document.querySelector('input[name="method"]:checked')?.value || 'POST';
+    return { x, y, rValues, method };
 }
 
 function handleFormSubmit(event) {
     event.preventDefault();
 
-    const { x, y, rValues } = getFormData();
+    const { x, y, rValues, method } = getFormData();
     if (!validateInput(x, y, rValues)) return;
     const data = { x: parseFloat(x), y: parseFloat(y), r: rValues.map(r => parseFloat(r)) };
 
-    fetch('/fcgi-bin/fcgi-server.jar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    })
-        .then(response => {
-            if (!response.ok) {
-                return response.json()
-                    .catch(() => {
-                        const errorMsg = `${response.status} - ${response.statusText || 'Unknown Error'}`;
-                        throw new Error(`${errorMsg}`);
-                    })
-                    .then(results => {
-                        const errorDetail = results && results.error ? `: ${results.error}` : '';
-                        const errorMsg = `${response.status} - ${response.statusText}${errorDetail}`;
-                        if (response.status >= 400 && response.status < 500) {
-                            throw new Error(`клиента: ${errorMsg}`);
-                        } else if (response.status >= 500 && response.status < 600) {
-                            throw new Error(`сервера: ${errorMsg}`);
-                        } else {
-                            throw new Error(errorMsg);
-                        }
-                    });
-            }
-            return response.json();
-        })
+    let fetchOptions;
+
+    if (method === 'GET') {
+        const queryString = Object.entries(data)
+            .map(([key, value]) => {
+                const strValue = Array.isArray(value) ? value.join(',') : value;
+                return `${key}=${encodeURIComponent(strValue)}`;
+            })
+            .join('&');
+        fetchOptions = { method: 'GET', url: `/fcgi-bin/fcgi-server.jar?${queryString}` };
+    } else {
+        fetchOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+    }
+
+    fetch(fetchOptions.url || '/fcgi-bin/fcgi-server.jar', fetchOptions)
+        .then(handleResponse)
         .then(results => {
             updateTable(results);
         })
         .catch(error => alert("Ошибка " + error.message));
+}
+
+function handleResponse(response) {
+    if (!response.ok) {
+        return response.json()
+            .catch(() => {
+                const errorMsg = `${response.status} - ${response.statusText || 'Unknown Error'}`;
+                throw new Error(`${errorMsg}`);
+            })
+            .then(results => {
+                const errorDetail = results && results.error ? `: ${results.error}` : '';
+                const errorMsg = `${response.status} - ${response.statusText}${errorDetail}`;
+                if (response.status >= 400 && response.status < 500) {
+                    throw new Error(`клиента: ${errorMsg}`);
+                } else if (response.status >= 500 && response.status < 600) {
+                    throw new Error(`сервера: ${errorMsg}`);
+                } else {
+                    throw new Error(errorMsg);
+                }
+            });
+    }
+    return response.json();
 }
 
 function updateTable(results) {
