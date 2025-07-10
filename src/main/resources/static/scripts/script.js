@@ -1,5 +1,3 @@
-document.getElementById('pointForm').addEventListener('submit', handleFormSubmit);
-
 const stat = {
     year: '2-digit',
     month: '2-digit',
@@ -19,10 +17,9 @@ function getFormData() {
     return { x, y, rValues, method };
 }
 
-function handleFormSubmit(event) {
-    event.preventDefault();
-
+function handleFormSubmit() {
     const { x, y, rValues, method } = getFormData();
+
     if (!validateInput(x, y, rValues)) return;
     const data = { x: parseFloat(x), y: parseFloat(y), r: rValues.map(r => parseFloat(r)) };
 
@@ -35,16 +32,20 @@ function handleFormSubmit(event) {
                 return `${key}=${encodeURIComponent(strValue)}`;
             })
             .join('&');
-        fetchOptions = { method: 'GET', url: `/fcgi-bin/fcgi-server.jar?${queryString}` };
+        fetchOptions = {
+            method: 'GET',
+            url: `/fcgi-bin/fcgi-server.jar?${queryString}`,
+            headers: { 'Content-Type': 'application/json' } };
     } else {
         fetchOptions = {
             method: 'POST',
+            url: '/fcgi-bin/fcgi-server.jar',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         };
     }
 
-    fetch(fetchOptions.url || '/fcgi-bin/fcgi-server.jar', fetchOptions)
+    fetch(fetchOptions.url, fetchOptions)
         .then(handleResponse)
         .then(results => {
             updateTable(results);

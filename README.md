@@ -40,6 +40,7 @@ httpd -f ~/web/httpd.conf -k start
 java -jar -DFCGI_PORT=28003 ~/web/httpd-root/fcgi-bin/fcgi-server.jar
 
 curl -X POST -H "Content-Type: application/json" -d '{"x": 1, "y": 2, "r": [1.5]}' http://localhost:28002/fcgi-bin/fcgi-server.jar
+curl -X GET -H "Content-Type: application/json" "http://localhost:28002/fcgi-bin/fcgi-server.jar?x=1&y=2&r=1.5"
 
 ps aux + kill
 ```
