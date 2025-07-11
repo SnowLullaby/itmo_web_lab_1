@@ -2,17 +2,13 @@ package ru.web.io;
 
 import com.fastcgi.FCGIInterface;
 
+import ru.web.parser.QueryParser;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public class IOHandler {
-    private final FCGIInterface fcgiInt;
-
-    public IOHandler(FCGIInterface fcgiInt) {
-        this.fcgiInt = fcgiInt;
-    }
-
     public String readRequest(String method) throws IOException {
         if ("POST".equalsIgnoreCase(method)) {
             return readPostBody();
@@ -34,9 +30,9 @@ public class IOHandler {
         return new String(requestBodyRaw, StandardCharsets.UTF_8);
     }
 
-    private String readGetQuery() throws IOException {
-        // in progress
-        return "";
+    private String readGetQuery() {
+        String queryParams = FCGIInterface.request.params.getProperty("QUERY_STRING");
+        return QueryParser.parseToJsonString(queryParams);
     }
 
     public void sendResponse(String response) {

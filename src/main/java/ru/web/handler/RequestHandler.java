@@ -6,6 +6,7 @@ import ru.web.dto.*;
 import ru.web.io.IOHandler;
 import ru.web.parser.JsonParser;
 import ru.web.validator.*;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ public class RequestHandler {
 
     public RequestHandler(FCGIInterface fcgiInt) {
         this.fcgiInt = fcgiInt;
-        this.ioHandler = new IOHandler(fcgiInt);
+        this.ioHandler = new IOHandler();
     }
 
     public void processRequests() {
@@ -27,10 +28,10 @@ public class RequestHandler {
                 String method = paramsRaw.getProperty("REQUEST_METHOD");
                 String uri = paramsRaw.getProperty("REQUEST_URI");
 
-                if (!"POST".equalsIgnoreCase(method)) {
+                if (!"POST".equalsIgnoreCase(method) && !"GET".equalsIgnoreCase(method)) {
                     ioHandler.sendResponse(ResponseBuilder.buildErrorResponse(405, "Method Not Allowed", "Метод недоступен"));
                     continue;
-                } else if (!"/fcgi-bin/fcgi-server.jar".equals(uri)) {
+                } else if (!"/fcgi-bin/fcgi-server.jar".equals(uri.contains("?") ? uri.substring(0, uri.indexOf("?")) : uri)) {
                     ioHandler.sendResponse(ResponseBuilder.buildErrorResponse(405, "Method Not Allowed", "Неправильный URI"));
                     continue;
                 }

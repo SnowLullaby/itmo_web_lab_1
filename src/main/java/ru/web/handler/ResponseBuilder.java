@@ -1,5 +1,6 @@
 package ru.web.handler;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import ru.web.dto.ResponseDTO;
 
@@ -7,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class ResponseBuilder {
-    private static final com.google.gson.Gson GSON = new com.google.gson.Gson();
+    private static final Gson GSON = new Gson();
     private static final String RESPONSE_TEMPLATE = """
             Status: %d %s
             Content-Type: application/json
