@@ -1,4 +1,4 @@
-package ru.web.parser;
+package ru.web.util.parser;
 
 import com.google.gson.Gson;
 

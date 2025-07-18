@@ -1,16 +1,16 @@
-package ru.web.handler;
+package ru.web.service;
 
-import ru.web.dto.RequestDTO;
-import ru.web.dto.ResponseDTO;
-import ru.web.validator.HitValidator;
+import ru.web.model.RequestDTO;
+import ru.web.model.ResponseDTO;
+import ru.web.util.validator.HitValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LogicHandler {
-    static List<ResponseDTO> processLogic(RequestDTO parsed, long startTime) {
+public class ServiceHandler {
+    public static List<ResponseDTO> processLogic(RequestDTO parsed, long startTime) {
         List<ResponseDTO> responses = new ArrayList<>();
         double[] rValues = parsed.r();
 

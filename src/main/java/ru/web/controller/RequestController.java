@@ -1,20 +1,23 @@
-package ru.web.handler;
+package ru.web.controller;
 
 import com.fastcgi.FCGIInterface;
 
-import ru.web.dto.*;
-import ru.web.io.IOHandler;
-import ru.web.parser.JsonParser;
-import ru.web.validator.*;
+import ru.web.service.ServiceHandler;
+import ru.web.model.*;
+import ru.web.util.builder.ResponseBuilder;
+import ru.web.util.io.IOHandler;
+import ru.web.util.parser.JsonParser;
+import ru.web.util.validator.JsonValidator;
+import ru.web.util.validator.ValidationResult;
 
 import java.util.List;
 import java.util.Properties;
 
-public class RequestHandler {
+public class RequestController {
     private final FCGIInterface fcgiInt;
     private final IOHandler ioHandler;
 
-    public RequestHandler(FCGIInterface fcgiInt) {
+    public RequestController(FCGIInterface fcgiInt) {
         this.fcgiInt = fcgiInt;
         this.ioHandler = new IOHandler();
     }
@@ -45,7 +48,7 @@ public class RequestHandler {
                     continue;
                 }
 
-                List<ResponseDTO> responses = LogicHandler.processLogic(parsed, startTime);
+                List<ResponseDTO> responses = ServiceHandler.processLogic(parsed, startTime);
                 ioHandler.sendResponse(ResponseBuilder.buildSuccessResponse(responses));
 
             } catch (Exception e) {

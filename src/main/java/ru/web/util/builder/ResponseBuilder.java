@@ -1,8 +1,8 @@
-package ru.web.handler;
+package ru.web.util.builder;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import ru.web.dto.ResponseDTO;
+import ru.web.model.ResponseDTO;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -17,12 +17,12 @@ public class ResponseBuilder {
             %s
             """;
 
-    static String buildSuccessResponse(List<ResponseDTO> responses) {
+    public static String buildSuccessResponse(List<ResponseDTO> responses) {
         String jsonResponse = GSON.toJson(responses);
         return String.format(RESPONSE_TEMPLATE, 200, "OK", jsonResponse.getBytes(StandardCharsets.UTF_8).length, jsonResponse);
     }
 
-    static String buildErrorResponse(int status, String statusText, String errorMessage) {
+    public static String buildErrorResponse(int status, String statusText, String errorMessage) {
         JsonObject errorResponse = new JsonObject();
         errorResponse.addProperty("error", errorMessage);
         String jsonError = GSON.toJson(errorResponse);

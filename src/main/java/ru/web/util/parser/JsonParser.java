@@ -1,8 +1,8 @@
-package ru.web.parser;
+package ru.web.util.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import ru.web.dto.RequestDTO;
+import ru.web.model.RequestDTO;
 
 public class JsonParser {
     private static final Gson GSON = new Gson();

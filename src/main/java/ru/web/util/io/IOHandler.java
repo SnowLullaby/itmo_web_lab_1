@@ -1,8 +1,7 @@
-package ru.web.io;
+package ru.web.util.io;
 
 import com.fastcgi.FCGIInterface;
-
-import ru.web.parser.QueryParser;
+import ru.web.util.parser.QueryParser;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
