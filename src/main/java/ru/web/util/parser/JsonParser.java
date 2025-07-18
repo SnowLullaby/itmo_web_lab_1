@@ -2,7 +2,7 @@ package ru.web.util.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import ru.web.model.RequestDTO;
+import ru.web.dto.RequestDTO;
 
 public class JsonParser {
     private static final Gson GSON = new Gson();

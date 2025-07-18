@@ -2,8 +2,8 @@ package ru.web.controller;
 
 import com.fastcgi.FCGIInterface;
 
-import ru.web.service.ServiceHandler;
-import ru.web.model.*;
+import ru.web.service.HitService;
+import ru.web.dto.*;
 import ru.web.util.builder.ResponseBuilder;
 import ru.web.util.io.IOHandler;
 import ru.web.util.parser.JsonParser;
@@ -48,7 +48,7 @@ public class RequestController {
                     continue;
                 }
 
-                List<ResponseDTO> responses = ServiceHandler.processLogic(parsed, startTime);
+                List<ResponseDTO> responses = HitService.processLogic(parsed, startTime);
                 ioHandler.sendResponse(ResponseBuilder.buildSuccessResponse(responses));
 
             } catch (Exception e) {

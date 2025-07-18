@@ -1,6 +1,6 @@
 package ru.web.util.validator;
 
-import ru.web.model.RequestDTO;
+import ru.web.dto.RequestDTO;
 
 public class JsonValidator {
     public static ValidationResult validate(RequestDTO parsed) {

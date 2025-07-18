@@ -2,7 +2,7 @@ package ru.web.util.builder;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import ru.web.model.ResponseDTO;
+import ru.web.dto.ResponseDTO;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
