@@ -35,7 +35,7 @@ public class RequestController {
                     ioHandler.sendResponse(ResponseBuilder.buildErrorResponse(405, "Method Not Allowed", "Метод недоступен"));
                     continue;
                 } else if (!"/fcgi-bin/fcgi-server.jar".equals(uri.contains("?") ? uri.substring(0, uri.indexOf("?")) : uri)) {
-                    ioHandler.sendResponse(ResponseBuilder.buildErrorResponse(405, "Method Not Allowed", "Неправильный URI"));
+                    ioHandler.sendResponse(ResponseBuilder.buildErrorResponse(405, "URI Not Allowed", "Неправильный URI"));
                     continue;
                 }
 
