@@ -11,7 +11,7 @@ public class JsonParser {
         try {
             RequestDTO dto = GSON.fromJson(jsonString, RequestDTO.class);
             if (dto == null) {
-                throw new IllegalArgumentException("Пустой JSON");
+                throw new IllegalArgumentException("Отсутствует JSON-строка");
             }
             return dto;
         } catch (JsonSyntaxException e) {

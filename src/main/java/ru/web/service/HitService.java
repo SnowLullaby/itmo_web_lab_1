@@ -12,7 +12,7 @@ import java.util.List;
 public class HitService {
     public static List<ResponseDTO> processLogic(RequestDTO parsed, long startTime) {
         List<ResponseDTO> responses = new ArrayList<>();
-        double[] rValues = parsed.r();
+        Double[] rValues = parsed.r();
 
         for (double r : rValues) {
             long executionTime = (System.nanoTime() - startTime);
