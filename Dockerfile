@@ -1,6 +1,6 @@
 FROM gradle:8.10-jdk17 AS build
-COPY --chown=gradle:gradle . home/gradle/src
-WORKDIR home/gradle/src
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
 RUN gradle shadowJar --no-daemon
 
 FROM eclipse-temurin:17-jre
