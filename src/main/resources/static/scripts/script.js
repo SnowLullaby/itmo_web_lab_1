@@ -17,7 +17,7 @@ function getFormData() {
     return { x, y, rValues, method };
 }
 
-function handleFormSubmit() {
+async function handleFormSubmit() {
     const { x, y, rValues, method } = getFormData();
 
     if (!validateInput(x, y, rValues)) return;
@@ -45,34 +45,39 @@ function handleFormSubmit() {
         };
     }
 
-    fetch(fetchOptions.url, fetchOptions)
-        .then(handleResponse)
-        .then(results => {
-            updateTable(results);
-        })
-        .catch(error => alert("Ошибка " + error.message));
+    try {
+        const response = await fetch(fetchOptions.url, fetchOptions);
+        const results = await handleResponse(response);
+        updateTable(results);
+    } catch (error) {
+        alert("Ошибка: " + error.message);
+    }
 }
 
-function handleResponse(response) {
-    if (!response.ok) {
-        return response.json()
-            .catch(() => {
-                const errorMsg = `${response.status} - ${response.statusText || 'Unknown Error'}`;
-                throw new Error(`${errorMsg}`);
-            })
-            .then(results => {
-                const errorDetail = results && results.error ? `: ${results.error}` : '';
-                const errorMsg = `${response.status} - ${response.statusText}${errorDetail}`;
-                if (response.status >= 400 && response.status < 500) {
-                    throw new Error(`клиента: ${errorMsg}`);
-                } else if (response.status >= 500 && response.status < 600) {
-                    throw new Error(`сервера: ${errorMsg}`);
-                } else {
-                    throw new Error(errorMsg);
-                }
-            });
+async function handleResponse(response) {
+    if (response.ok) {
+        return await response.json();
     }
-    return response.json();
+
+    let errorMsg = `${response.status} - ${response.statusText || 'Unknown Error'}`;
+    let errorDetail = '';
+
+    try {
+        const errorData = await response.json();
+        if (errorData?.error) {
+            errorDetail = `: ${errorData.error}`;
+        }
+    } catch (e) {}
+
+    errorMsg += errorDetail;
+
+    if (response.status >= 400 && response.status < 500) {
+        throw new Error(`Ошибка клиента: ${errorMsg}`);
+    } else if (response.status >= 500 && response.status < 600) {
+        throw new Error(`Ошибка сервера: ${errorMsg}`);
+    } else {
+        throw new Error(errorMsg);
+    }
 }
 
 function updateTable(results) {

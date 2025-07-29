@@ -1,7 +1,7 @@
-package ru.web.util.validator;
+package ru.web.service;
 
 public class HitValidator {
-    public static boolean validateHit(double x, double y, double r) {
+    protected static boolean validateHit(double x, double y, double r) {
         return validateTriangle(x, y, r) || validateCircle(x, y, r) || validateSquare(x, y, r);
     }
 
