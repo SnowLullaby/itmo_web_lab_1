@@ -39,4 +39,6 @@ public class JsonValidator {
 
         return new ValidationResult(true, null);
     }
+
+    private JsonValidator(){}
 }

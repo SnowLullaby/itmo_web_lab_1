@@ -3,6 +3,7 @@ package ru.web.util.parser;
 import com.google.gson.Gson;
 
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class QueryParser {
             String[] keyValue = pair.split("=", 2);
             if (keyValue.length == 2) {
                 String key = keyValue[0];
-                String value = URLDecoder.decode(keyValue[1], java.nio.charset.StandardCharsets.UTF_8);
+                String value = URLDecoder.decode(keyValue[1], StandardCharsets.UTF_8);
 
                 if (key.equals("r")) {
                     String[] rValues = value.split(",");
@@ -41,4 +42,6 @@ public class QueryParser {
 
         return GSON.toJson(params);
     }
+
+    private QueryParser(){}
 }

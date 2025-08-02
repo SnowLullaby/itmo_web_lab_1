@@ -21,4 +21,5 @@ public class HitService {
         }
         return responses;
     }
+    private HitService(){}
 }
