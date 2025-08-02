@@ -26,7 +26,7 @@ public class IOHandler {
         var requestBodyRaw = new byte[readBytes];
         buffer.get(requestBodyRaw);
         buffer.clear();
-        return new String(requestBodyRaw, StandardCharsets.UTF_8);
+        return new String(requestBodyRaw, StandardCharsets.UTF_8).intern();
     }
 
     private String readGetQuery() {

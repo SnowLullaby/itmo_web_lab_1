@@ -18,4 +18,6 @@ public class JsonParser {
             throw new IllegalArgumentException("Некорректный формат запроса", e);
         }
     }
+
+    private JsonParser(){}
 }

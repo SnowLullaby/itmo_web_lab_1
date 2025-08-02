@@ -28,4 +28,6 @@ public class ResponseBuilder {
         String jsonError = GSON.toJson(errorResponse);
         return String.format(RESPONSE_TEMPLATE, status, statusText, jsonError.getBytes(StandardCharsets.UTF_8).length, jsonError);
     }
+
+    private ResponseBuilder(){}
 }

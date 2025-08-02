@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
 
         ctx.beginPath();
-        ctx.arc(centerX, centerY, R / 2 * scaleY, 1/2 * Math.PI, -Math.PI);
+        ctx.arc(centerX, centerY, R / 2 * scaleY, 1/2 * Math.PI, Math.PI);
         ctx.lineTo(centerX, centerY);
         ctx.closePath();
         ctx.fill();

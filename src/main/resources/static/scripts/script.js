@@ -50,7 +50,7 @@ async function handleFormSubmit() {
         const results = await handleResponse(response);
         updateTable(results);
     } catch (error) {
-        alert("Ошибка: " + error.message);
+        showNotification("Ошибка: " + error.message);
     }
 }
 
@@ -88,9 +88,9 @@ function updateTable(results) {
 
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${result.x}</td>
-            <td>${result.y}</td>
-            <td>${result.r}</td>
+            <td>${Number(result.x).toFixed(4).replace(/\.?0+$/, '')}</td>
+            <td>${Number(result.y).toFixed(4).replace(/\.?0+$/, '')}</td>
+            <td>${Number(result.r).toFixed(4).replace(/\.?0+$/, '')}</td>
             <td data-result="${result.hit}">${result.hit ? "Попадание" : "Промах"}</td>
             <td>${formattedTime}</td>
             <td>${result.executionTime} ns</td>
